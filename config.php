@@ -1,7 +1,6 @@
 <?php
 
-use humhub\modules\updater\modules\packageinstaller\Module;
-use humhub\modules\updater\Module as BaseModule;
+use humhub\modules\updater\modules\packageinstaller\Module as PackageModule;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\commands\CronController;
 use yii\web\Application;
@@ -9,11 +8,11 @@ use yii\web\Application;
 /** @noinspection MissedFieldInspection */
 return [
     'id' => 'updater',
-    'class' => BaseModule::class,
+    'class' => Module::class,
     'namespace' => 'humhub\modules\updater',
     'events' => [
         ['class' => AdminMenu::class, 'event' => AdminMenu::EVENT_INIT, 'callback' => [Events::class, 'onAdminMenuInit']],
-        ['class' => Application::class, 'event' => Application::EVENT_BEFORE_REQUEST, 'callback' => [Module::class, 'onApplicationInit']],
+        ['class' => Application::class, 'event' => Application::EVENT_BEFORE_REQUEST, 'callback' => [PackageModule::class, 'onApplicationInit']],
         ['class' => CronController::class, 'event'  => 'daily', 'callback' => [Events::class, 'onCronRun']],
     ],
 ];
