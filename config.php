@@ -1,17 +1,20 @@
 <?php
 
+use humhub\modules\updater\modules\packageinstaller\Module;
+use humhub\modules\updater\Module as BaseModule;
 use humhub\modules\admin\widgets\AdminMenu;
+use humhub\commands\CronController;
 use yii\web\Application;
 
 /** @noinspection MissedFieldInspection */
 return [
     'id' => 'updater',
-    'class' => 'humhub\modules\updater\Module',
+    'class' => BaseModule::class,
     'namespace' => 'humhub\modules\updater',
     'events' => [
-        ['class' => AdminMenu::className(), 'event' => AdminMenu::EVENT_INIT, 'callback' => ['humhub\modules\updater\Events', 'onAdminMenuInit']],
-        ['class' => 'yii\web\Application', 'event' => Application::EVENT_BEFORE_REQUEST, 'callback' => ['humhub\modules\updater\modules\packageinstaller\Module', 'onApplicationInit']],
-        ['class' => '\humhub\commands\CronController', 'event'  => 'daily', 'callback' => ['humhub\modules\updater\Events', 'onCronRun']],
+        ['class' => AdminMenu::class, 'event' => AdminMenu::EVENT_INIT, 'callback' => [Events::class, 'onAdminMenuInit']],
+        ['class' => Application::class, 'event' => Application::EVENT_BEFORE_REQUEST, 'callback' => [Module::class, 'onApplicationInit']],
+        ['class' => CronController::class, 'event'  => 'daily', 'callback' => [Events::class, 'onCronRun']],
     ],
 ];
 ?>
