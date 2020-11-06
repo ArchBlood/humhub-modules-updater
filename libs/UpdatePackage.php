@@ -94,6 +94,7 @@ class UpdatePackage
         $res = $zip->open($targetFile);
         if ($res === TRUE) {
             $zip->extractTo(Yii::$app->getModule('updater')->getTempPath());
+            array_map('unlink', glob(Yii::$app->getModule('updater')->getTempPath()));
             $zip->close();
         } else {
             throw new Exception(Yii::t('UpdaterModule.base', 'Could not extract update package!'));
